@@ -2,16 +2,15 @@
 
 import UploadButton from './UploadButton'
 import { trpc } from '@/app/_trpc/client'
-import { count } from 'console'
 import { Ghost, Loader2, MessageSquare, Plus, Trash } from 'lucide-react'
 import Skeleton from "react-loading-skeleton"
 import { format } from "date-fns"
 import Link from 'next/link'
 import { Button } from './ui/button'
-import { use, useState } from 'react'
+import { useState } from 'react'
 
 const Dashboard = () => {
-    const utils = trpc.useContext()
+    const utils = trpc.useUtils()
 
     // to add loading state for currently deleted file while revalidating getUserFile
     const [currentlyDeletingFile , setCurrentlyDeletingFile] = useState<string | null>(null)
@@ -32,6 +31,9 @@ const Dashboard = () => {
             setCurrentlyDeletingFile(null)
         }
     })
+
+    console.log("dashComp")
+    console.log(files)
 
     return (
         <main className='l:p-20 mx-auto sm:px-10 max-w-7xl '>
