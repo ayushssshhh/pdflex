@@ -9,8 +9,8 @@ const Page = () => {
     const router = useRouter()
 
     // to get origin value from param
-    const SearchParams = useSearchParams()
-    const origin = SearchParams.get('origin')
+    // const SearchParams = useSearchParams()
+    // const origin = SearchParams.get('origin')
 
     // using trpc => response type is defined
     const { data: authData } = trpc.authCallback.useQuery(undefined ,{
@@ -21,7 +21,7 @@ const Page = () => {
     // Check for successful authentication
     if (authData?.success) {
         // User is synced to the database
-        router.push(origin ? `/${origin}` : '/dashboard');
+        router.push('/dashboard');
     }
     
     if (authData?.success === false) {

@@ -13,8 +13,8 @@ const nextConfig = {
 
 module.exports = nextConfig
 
-module.exports = {
-    experimental: {
-        missingSuspenseWithCSRBailout: false,
-    },
-}
+// module.exports = {
+//     experimental: {
+//         missingSuspenseWithCSRBailout: false,
+//     },
+// }
