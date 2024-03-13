@@ -17,11 +17,12 @@ const ChatWrapper = ({ fileId }: ChatWrapperProps) => {
     fileId,
   },
     {
-      refetchInterval: (data) =>
-        data?.status === 'SUCCESS' ||
-          data?.status === 'FAILED'
-          ? false //stop fetching set isLoading => false
-          : 500, //if status is not success or failed refetch after 500ms
+      refetchInterval: 500
+        //(data) =>
+//        data?.status === 'SUCCESS' ||
+ //         data?.status === 'FAILED'
+   //       ? false //stop fetching set isLoading => false
+     //     : 500, //if status is not success or failed refetch after 500ms
     }
   )
 
