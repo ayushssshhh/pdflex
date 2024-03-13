@@ -11,8 +11,7 @@ const Page = async () => {
   console.log(user)
 
   if(!user || !user.email){
-    console.log("yes")
-    redirect('/auth-callbacks?origin=dashbord') 
+    redirect('/auth-callbacks?origin=dashboard') 
     // auth-callback will sync new user logedin for first time to our db
     // origin enable navigate back to page once callback is completed 
   }
@@ -25,7 +24,7 @@ const Page = async () => {
   })
 
   if(!dbUser){
-    redirect('/auth-callbacks?origin=dashbord') 
+    redirect('/auth-callback?origin=dashboard') 
     // auth-callback will sync new user logedin for first time to our db
     // origin enable navigate back to page once callback is completed 
   }
