@@ -2,7 +2,7 @@ import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 import { appRouter } from '@/trpc'
 const handler = (req: Request) =>
   fetchRequestHandler({
-    endpoint: 'https://pdflex-psi.vercel.app/api/trpc',
+    endpoint: '/api/trpc',
     req,
     router: appRouter,
     createContext: () => ({})
