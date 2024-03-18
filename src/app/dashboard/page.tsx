@@ -5,32 +5,34 @@ import { db } from '@/db';
 import Dashboard from '@/components/Dashboard';
 
 const Page = async () => {
-  const {isAuthenticated , getUser} = getKindeServerSession();
+  const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  console.log(user)
 
-  if(!user || !user.email){
-    redirect('/auth-callback') 
+  if (!user || !user.email) {
+    redirect('/auth-callback')
     // auth-callback will sync new user logedin for first time to our db
     // origin enable navigate back to page once callback is completed 
   }
 
   // checking user in db
   const dbUser = await db.user.findFirst({
-    where:{
+    where: {
       id: user.id
     }
   })
 
-  if(!dbUser){
-    redirect('/auth-callback') 
+  if (!dbUser) {
+    redirect('/auth-callback')
     // auth-callback will sync new user logedin for first time to our db
     // origin enable navigate back to page once callback is completed 
   }
 
   return (
-    <Dashboard/>
+    <>
+      <Dashboard />
+      <div className='h-20'></div>
+    </>
   )
 }
 

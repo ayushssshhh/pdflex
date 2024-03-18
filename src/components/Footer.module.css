@@ -1,0 +1,85 @@
+.container{
+    margin: 10px;
+    border-radius: 20px;
+    background-image: linear-gradient(135deg ,#2464ec , #92a7d4 );
+    background-color: rgb(255, 255, 255);
+    color: rgba(255, 255, 255, 0.715);
+    padding: 50px 100px;
+}
+
+.head{
+    display: flex;
+    flex-wrap: wrap;
+    justify-items: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.info{
+    margin-top: 10px;
+}
+
+.head h1{
+    font-size: 30px;
+}
+
+.head{
+    font-size: 12px;
+    position: relative;
+    top: 6px;
+    margin-bottom: 2px;
+}
+
+.head p{
+    position: relative;
+    top: 8px;
+}
+
+.head span{
+    margin: 0 5px;
+}
+
+.line{
+    margin: 40px 0;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.427);
+}
+
+.quickLinks{
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-items: center;
+    align-items: center;
+}
+
+.quickLinks p{
+    margin: 0 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.quickLinks span{
+    font-weight: 500;
+    background-color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #2052c0;
+}
+
+@media screen and (max-width: 580px) {
+    .container {
+        padding: 20px;
+    }
+
+    .info{
+        margin-top: 10px;
+    }
+  }
+
+  @media screen and (max-width: 410px) {
+    .head p{
+        position: relative;
+        top: -8px;
+    }
+  }

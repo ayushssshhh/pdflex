@@ -14,7 +14,7 @@ const f = createUploadthing();
 
 
 export const ourFileRouter = {
-    pdfUploader: f({ pdf: { maxFileSize: "4MB" } })
+    pdfUploader: f({ pdf: { maxFileSize: "16MB" } })
         // middleware will run when someone req to upload dile from client
         .middleware(async ({ req }) => {
             // checking user is auth or not(kinde)

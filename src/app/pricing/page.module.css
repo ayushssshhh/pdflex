@@ -1,0 +1,9 @@
+.commingSoon {
+    padding: 5px;
+    pointer-events: auto ! important;
+    cursor: not-allowed ! important;
+    border-radius: 10px;
+    font-weight: 500;
+    color: rgba(50, 50, 50, 0.669);
+    background-color: rgba(236, 231, 231, 0.505);
+}

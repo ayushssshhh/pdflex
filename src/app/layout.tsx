@@ -1,4 +1,4 @@
-import { cn } from '@/lib/util'
+import { cn, constructMetadata } from '@/lib/util'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -8,13 +8,11 @@ import "simplebar-react/dist/simplebar.min.css"
 
 import "react-loading-skeleton/dist/skeleton.css"
 import { Toaster } from '@/components/ui/toaster'
+import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
-  title: 'PDFlex',
-  description: 'developed by Kumar Ayush',
-}
+export const metadata = constructMetadata()
 
 export default function RootLayout({
   children,
@@ -32,6 +30,7 @@ export default function RootLayout({
           <Toaster />
           <Navbar />
           {children}
+          <Footer/>
         </body>
       </Providers>
 

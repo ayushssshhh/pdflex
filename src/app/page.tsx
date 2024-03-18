@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import MaxWidthWrapper from "../components/MaxWidthWrapper";
 import { buttonVariants } from "@/components/ui/button";
+import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export default function Home() {
   return (
@@ -22,12 +23,11 @@ export default function Home() {
           PDFlex allows you to have conversations with any PDF document. Simply upload your file and start asking questions right away.
         </p>
 
-        <Link className={buttonVariants({
-          size: 'lg',
-          className: 'mt-5'
-        })} href='/dasbord' target="_blank">
-          Get started <ArrowRight className="ml-2 h-5 w-5" />
-        </Link>
+        <RegisterLink className={buttonVariants({
+          size: 'sm',
+        })}>
+          Get Started <ArrowRight className="ml-1.5 h-5 w-5"></ArrowRight>
+        </RegisterLink>
       </MaxWidthWrapper>
 
       {/* value prepostion section */}
@@ -87,59 +87,60 @@ export default function Home() {
             </p>
           </div>
         </div>
-      </div>
 
-      {/* steps */}
-      <ol className='my-8 space-y-4 pt-8 md:flex md:space-x-12 md:space-y-0 lg:m-10 w-[95%] mx-[auto]'>
-        <li className='md:flex-1'>
-          <div className='flex flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:border-t-2 md:pb-0 md:pl-0 md:pt-4'>
-            <span className='text-sm font-medium text-blue-600'>
-              Step 1
-            </span>
-            <span className='text-xl font-semibold'>
-              Sign up for an account
-            </span>
-            <span className='mt-2 text-zinc-700'>
-              Either starting out with a free plan or
-              choose our{' '}
-              <Link
-                href='/pricing'
-                className='text-blue-700 underline underline-offset-2'>
-                pro plan
-              </Link>
-              .
-            </span>
-          </div>
-        </li>
-        <li className='md:flex-1'>
-          <div className='flex flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:border-t-2 md:pb-0 md:pl-0 md:pt-4'>
-            <span className='text-sm font-medium text-blue-600'>
-              Step 2
-            </span>
-            <span className='text-xl font-semibold'>
-              Upload your PDF file
-            </span>
-            <span className='mt-2 text-zinc-700'>
-              We&apos;ll process your file and make it
-              ready for you to chat with.
-            </span>
-          </div>
-        </li>
-        <li className='md:flex-1'>
-          <div className='flex flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:border-t-2 md:pb-0 md:pl-0 md:pt-4'>
-            <span className='text-sm font-medium text-blue-600'>
-              Step 3
-            </span>
-            <span className='text-xl font-semibold'>
-              Start asking questions
-            </span>
-            <span className='mt-2 text-zinc-700'>
-              It&apos;s that simple. Try out PDFlex today -
-              it really takes less than a minute.
-            </span>
-          </div>
-        </li>
-      </ol>
+
+        {/* steps */}
+        <ol className='my-8 space-y-4 pt-8 md:flex md:space-x-12 md:space-y-0 lg:m-10 w-[95%] mx-[auto]'>
+          <li className='md:flex-1'>
+            <div className='flex flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:border-t-2 md:pb-0 md:pl-0 md:pt-4'>
+              <span className='text-sm font-medium text-blue-600'>
+                Step 1
+              </span>
+              <span className='text-xl font-semibold'>
+                Sign up for an account
+              </span>
+              <span className='mt-2 text-zinc-700'>
+                Either starting out with a free plan or
+                choose our{' '}
+                <Link
+                  href='/pricing'
+                  className='text-blue-700 underline underline-offset-2'>
+                  pro plan
+                </Link>
+                .
+              </span>
+            </div>
+          </li>
+          <li className='md:flex-1'>
+            <div className='flex flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:border-t-2 md:pb-0 md:pl-0 md:pt-4'>
+              <span className='text-sm font-medium text-blue-600'>
+                Step 2
+              </span>
+              <span className='text-xl font-semibold'>
+                Upload your PDF file
+              </span>
+              <span className='mt-2 text-zinc-700'>
+                We&apos;ll process your file and make it
+                ready for you to chat with.
+              </span>
+            </div>
+          </li>
+          <li className='md:flex-1'>
+            <div className='flex flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:border-t-2 md:pb-0 md:pl-0 md:pt-4'>
+              <span className='text-sm font-medium text-blue-600'>
+                Step 3
+              </span>
+              <span className='text-xl font-semibold'>
+                Start asking questions
+              </span>
+              <span className='mt-2 text-zinc-700'>
+                It&apos;s that simple. Try out PDFlex today -
+                it really takes less than a minute.
+              </span>
+            </div>
+          </li>
+        </ol>
+      </div>
 
       <div className='mx-auto max-w-6xl mb-40 px-6 lg:px-8'>
         <div className='mt-16 flow-root sm:mt-24'>
