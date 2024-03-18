@@ -50,7 +50,6 @@ export function constructMetadata({
     },
     icons,
     metadataBase: new URL('https://pdflex-psi.vercel.app/'),
-    themeColor: '#FFF',
     ...(noIndex && {
       robots: {
         index: false,
