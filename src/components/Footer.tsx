@@ -14,7 +14,7 @@ const Footer = () => {
                 <h1>PDFlex</h1>
                 <p>developed by KUMAR AYUSH <span>|</span> 2024 </p>
             </div>
-            <p className={classes.info}>A cutting-edge PDF chatbot powered by OpenAI's GenAI technology. </p>
+            <p className={classes.info}>A cutting-edge PDF chatbot powered by OpenAI GenAI technology. </p>
 
             <div className={classes.line}></div>
 
@@ -60,7 +60,7 @@ const Footer = () => {
             <div className={classes.line}></div>
 
             <div className={classes.quickLinks}>
-                <p>Developer's Information <ArrowRight /></p>
+                <p>Developer Information <ArrowRight /></p>
                 <a
                     href='https://www.linkedin.com/in/kumar-ayush-3b8a27240/'
                     target='_blank' className={buttonVariants({
