@@ -68,6 +68,8 @@ const UploadDropzone = () => {
     // getRootProps , getInputProps -> important to rendering top level div
     return (
         <Dropzone
+            noClick
+            noKeyboard
             multiple={false}
             onDrop={async (acceptedFile) => {
                 // seting uploading state true
