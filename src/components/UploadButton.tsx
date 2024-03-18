@@ -5,10 +5,11 @@ import { Button } from "./ui/button"
 import Dropzone from "react-dropzone"
 import { Cloud, File, Loader2 } from "lucide-react"
 import { Progress } from "./ui/progress"
-import { useUploadThing } from "@/lib/uploadthing"
+import { UploadButton as UploadThingBtn, useUploadThing } from "@/lib/uploadthing"
 import { useToast } from "./ui/use-toast"
 import { trpc } from "@/app/_trpc/client"
 import { useRouter } from "next/navigation"
+import classes from './UploadButton.module.css'
 
 const UploadDropzone = () => {
     // to tack is file uploading state
@@ -16,9 +17,6 @@ const UploadDropzone = () => {
 
     // to track file uploading progress
     const [uploadProgress, setUploadProgress] = useState<number>(0)
-
-    // to handle upload completed
-    const [uploadCompleted, setUploadCompleted] = useState<string>('')
 
     // handeling upload thing
     const { startUpload } = useUploadThing("pdfUploader")
@@ -68,9 +66,8 @@ const UploadDropzone = () => {
     // getRootProps , getInputProps -> important to rendering top level div
     return (
         <Dropzone
-            noClick
-            noKeyboard
             multiple={false}
+
             onDrop={async (acceptedFile) => {
                 // seting uploading state true
                 setIsUploading(true)
@@ -132,7 +129,7 @@ const UploadDropzone = () => {
                                         or drag and drop
                                     </p>
                                     <p className='text-xs text-zinc-500'>
-                                        PDF (up to 4MB)
+                                        PDF (up to 16MB)
                                     </p>
                                 </div>
                             ) : null}
@@ -177,15 +174,110 @@ const UploadDropzone = () => {
         </Dropzone >)
 }
 
+// file select upload
+const UploadSelectzone = () => {
+    // to tack is file uploading state
+    const [isUploading, setIsUploading] = useState<boolean>(false)
+
+    // to track file uploading progress
+    const [uploadProgress, setUploadProgress] = useState<number>(0)
+
+    // deterministic progress logic
+    const startSimulatedProgress = () => {
+        setUploadProgress(0) //setting progress to 0
+
+        const interval = setInterval(() => {
+            setUploadProgress((previousProgress) => {
+                if (previousProgress >= 90) {
+                    // clearInterval(interval)
+                    return previousProgress
+                }
+
+                return previousProgress + 5
+            })
+        }, 500)
+
+        return interval
+    }
+
+    return (
+        <div>
+            <label
+                htmlFor='dropzone-file'
+                className='flex flex-col items-center justify-center w-full h-full rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100'>
+
+                {uploadProgress != 100 ? (
+                    <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+                        <Cloud className='h-6 w-6 text-zinc-500 mb-2' />
+                        <p className='mb-2 text-sm text-zinc-700'>
+                            <span className='font-semibold'>
+                                Click to upload
+                            </span>
+                        </p>
+                        <p className='text-xs text-zinc-500'>
+                            PDF (up to 16MB)
+                        </p>
+                    </div>
+                ) : null}
+
+                {/* file uploading progress */}
+                {isUploading ? (
+                    <div className='w-full mt-4 max-w-xs mx-auto'>
+                        <Progress
+                            className="h-1 w-full bg-zinc-200"
+                            value={uploadProgress}
+                        />
+
+                        {/*after file uploadeed 100% redirect  */}
+                        {uploadProgress === 100 ? (
+                            <div>
+                                <h3 className="text-center">File Uploaded Successfuly 👍</h3>
+                                <div className='flex gap-1 items-center justify-center text-sm text-zinc-700 text-center pt-2'>
+                                    <Loader2 className='h-3 w-3 animate-spin' />
+                                    <p>Syncing...</p>
+                                </div>
+                            </div>
+                        ) : null}
+                    </div>
+                ) : null}
+                <UploadThingBtn
+                    className={classes.custom}
+
+                    endpoint="pdfUploader"
+                    onUploadBegin={() => {
+                        // seting uploading state true
+                        setIsUploading(true)
+
+                        // envoking deterministic Progress
+                        const progressInterval = startSimulatedProgress()
+                    }}
+                    onClientUploadComplete={(res) => {
+                        // setting progressbar filled 
+                        setUploadProgress(100)
+
+                        // re-rendering dashboard
+                        window.location.reload()
+                    }}
+                    onUploadError={(error: Error) => {
+                        // Do something with the error.
+                        alert(`ERROR! ${error.message}`);
+                    }}
+                />
+            </label>
+        </div>)
+}
+
+
 const UploadButton = () => {
     const [isOpen, setOpen] = useState<boolean>(false)
 
     return (
-        <Dialog open={isOpen} onOpenChange={(v) => {
-            if (!v) {
-                setOpen(v)
-            }
-        }}>
+        <Dialog
+            open={isOpen} onOpenChange={(v) => {
+                if (!v) {
+                    setOpen(v)
+                }
+            }}>
             {/* asChild tells to use child as coustom button rather wrapping button inside button */}
             {/* DialogTrigger use to set dialog open and control logic */}
             <DialogTrigger asChild
@@ -196,9 +288,18 @@ const UploadButton = () => {
 
             <DialogContent>
                 {/* coustom component for dropzone button  */}
-                <UploadDropzone />
-            </DialogContent>
 
+                {/* dropzone for large screen */}
+                <div className={classes.Dropzone}>
+                    <UploadDropzone />
+                </div>
+
+                {/* upload btn */}
+                <div className={classes.Uploadbtn}>
+                    <UploadSelectzone />
+                </div>
+
+            </DialogContent>
         </Dialog>
     )
 }

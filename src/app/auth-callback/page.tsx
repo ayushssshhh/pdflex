@@ -26,7 +26,6 @@ const Page = () => {
     
     if (authData?.success === false) {
         // User is synced to the database
-        console.log("done kk")
         router.push('https://pdflexayush.kinde.com/auth/cx/_:nav&m:login&psid:fc4dcf7ea41645d8ba066817ed64c38e');
     }
 
