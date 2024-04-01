@@ -11,7 +11,11 @@ import { trpc } from "@/app/_trpc/client"
 import { useRouter } from "next/navigation"
 import classes from './UploadButton.module.css'
 
-const UploadDropzone = () => {
+interface stateProps {
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  }
+
+const UploadDropzone = ({setOpen} : stateProps) => {
     // to tack is file uploading state
     const [isUploading, setIsUploading] = useState<boolean>(false)
 
@@ -80,9 +84,10 @@ const UploadDropzone = () => {
 
                 // if failed while uploading pdf raise toast alert
                 if (!res) {
+                    setOpen(false)
                     return toast({
-                        title: 'Something went Wrong',
-                        description: "Please try again later",
+                        title: 'Invalid file type',
+                        description: "Please try uploading PDF file only",
                         variant: 'destructive'
                     })
                 }
@@ -93,6 +98,7 @@ const UploadDropzone = () => {
 
                 // if uploaded file has no key raise toast alert
                 if (!key) {
+                    setOpen(false)
                     return toast({
                         title: 'Something went Wrong',
                         description: "Please try again later",
@@ -261,6 +267,7 @@ const UploadSelectzone = () => {
                     onUploadError={(error: Error) => {
                         // Do something with the error.
                         alert(`ERROR! ${error.message}`);
+                        window.location.reload()
                     }}
                 />
             </label>
@@ -291,7 +298,7 @@ const UploadButton = () => {
 
                 {/* dropzone for large screen */}
                 <div className={classes.Dropzone}>
-                    <UploadDropzone />
+                    <UploadDropzone setOpen={setOpen}/>
                 </div>
 
                 {/* upload btn */}

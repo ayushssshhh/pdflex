@@ -1,0 +1,17 @@
+.form{
+    margin: auto;
+    width: 90%;
+    text-align: left;
+    border: 2px rgb(14, 126, 231) solid;
+    padding: 30px;
+    border-radius: 30px;
+    background-color: rgba(254, 255, 255, 0.886);
+}
+
+.form div{
+    margin-bottom: 30px;
+}
+
+.form div label{
+    padding-left: 20px;
+}

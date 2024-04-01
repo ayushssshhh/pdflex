@@ -10,6 +10,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.3.3",
     "@hookform/resolvers": "^3.3.4",
     "@kinde-oss/kinde-auth-nextjs": "^2.1.13",
     "@mantine/hooks": "^7.6.2",
@@ -36,6 +37,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.3.1",
+    "emailjs": "^4.0.3",
     "eslint": "8.56.0",
     "eslint-config-next": "14.1.0",
     "langchain": "^0.1.26",
