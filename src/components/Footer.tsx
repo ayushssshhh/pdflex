@@ -12,7 +12,7 @@ const Footer = () => {
                     <Icons.logo className='fill-blue-600 h-3/4 w-3/4' />
                 </div>
                 <h1>PDFlex</h1>
-                <p>developed by KUMAR AYUSH <span>|</span> 2024 </p>
+                <p>developed by KUMAR AYUSH & YASH AGRAWAL <span>|</span> 2024 </p>
             </div>
             <p className={classes.info}>A cutting-edge PDF chatbot powered by OpenAI GenAI technology. </p>
 
@@ -60,7 +60,7 @@ const Footer = () => {
             <div className={classes.line}></div>
 
             <div className={classes.quickLinks}>
-                <p>Developer Information <ArrowRight /></p>
+                <p>Developer Information (KUMAR AYUSH) <ArrowRight /></p>
                 <a
                     href='https://www.linkedin.com/in/kumar-ayush-3b8a27240/'
                     target='_blank' className={buttonVariants({
@@ -91,6 +91,32 @@ const Footer = () => {
                         variant: 'ghost',
                         size: 'sm',
                     })}>Portfolio</a>
+            </div>
+
+            <div className={classes.quickLinks}>
+                <p>Developer Information (YASH AGRAWAL) <ArrowRight /></p>
+                <a
+                    href='https://www.linkedin.com/in/yash-agrawal-724785244/'
+                    target='_blank' className={buttonVariants({
+                        variant: 'ghost',
+                        size: 'sm',
+                    })}>LinkedIn</a>
+
+                <p>|</p>
+                <a
+                    href='mailto:yashagrawal0916@gmail.com'
+                    target='_blank' className={buttonVariants({
+                        variant: 'ghost',
+                        size: 'sm',
+                    })}>Email</a>
+
+                <p>|</p>
+                <a
+                    href='https://github.com/yaaassshhhh'
+                    target='_blank' className={buttonVariants({
+                        variant: 'ghost',
+                        size: 'sm',
+                    })}>Github</a>
             </div>
 
 
