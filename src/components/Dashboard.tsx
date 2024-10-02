@@ -32,8 +32,7 @@ const Dashboard = () => {
         }
     })
 
-    console.log("dashComp")
-    console.log(files)
+    console.log("dashComp" , files)
 
     return (
         <main className='l:p-20 mx-auto sm:px-10 max-w-7xl '>

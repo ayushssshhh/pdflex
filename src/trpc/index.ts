@@ -45,7 +45,7 @@ export const appRouter = router({
     //pass in uId and fetch all the user file (only for logged in feature)
     getUserFiles: privateProcedure.query(async ({ ctx }) => {
         const { userId } = ctx
-
+        console.log("----------------- Fetching User File ------------- ")
         return await db.file.findMany({
             where: {
                 userId
