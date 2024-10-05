@@ -18,9 +18,12 @@ import {
     Minus,
 } from 'lucide-react'
 import Link from 'next/link'
+import { cookies } from 'next/headers'
 const Page = async () => {
-    const { getUser } = getKindeServerSession()
-    const user = await getUser();
+    const cookieStore = cookies();
+
+    const user = cookieStore.get('user')?.value.toString();
+
 
     // pricing info
     const pricingItems = [

@@ -1,23 +1,26 @@
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { TRPCError, initTRPC } from '@trpc/server';
+import { cookies } from 'next/headers';
 
 const t = initTRPC.create();
 const middleware = t.middleware
 
 // querry only for authenticated user
 const isAuth = middleware(async (opts) => {
-  const { getUser } = getKindeServerSession()
-  const user = await getUser()
+  const cookieStore = cookies();
 
-  if (!user || !user.id) {
+  const user = cookieStore.get('user')?.value.toString();
+
+
+  if (!user) {
     throw new TRPCError({ code: 'UNAUTHORIZED' })
   }
 
   // / opts.next use to pass any value from this middleware directly to our private api-route as props
   return opts.next({
     ctx: {
-      userId: user.id,
-      user,
+      userId: user,
+      user : user,
     },
   })
 })

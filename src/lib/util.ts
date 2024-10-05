@@ -23,6 +23,28 @@ export function absoluteUrl(path: string) {
   return `http://localhost:${process.env.PORT ?? 3000}${path}`
 }
 
+export function getCookie(name: string): string | undefined {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+      return parts.pop()?.split(';').shift();
+  }
+}
+
+export function isValidEmail(email: string | undefined): boolean {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return typeof email === 'undefined' ? false : emailRegex.test(email)
+}
+
+export function isValidPasswordFun(password: string|undefined): boolean {
+  if(typeof password === 'undefined')
+    return false;
+  
+  const minLength = 6;
+  const hasNoSpaces = !/\s/.test(password);
+  return password.length >= minLength && hasNoSpaces;
+}
+
 export function constructMetadata({
   title = "PDFlex - the SaaS for students",
   description = "PDFlex is an open-source software developed by Kumar Ayush to make chatting to your PDF files easy.",

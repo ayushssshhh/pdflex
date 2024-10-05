@@ -6,6 +6,7 @@ import {PDFLoader} from 'langchain/document_loaders/fs/pdf'
 import { pinecone } from "@/lib/validator/pinecone";
 import {OpenAIEmbeddings} from "langchain/embeddings/openai"
 import { PineconeStore } from "langchain/vectorstores/pinecone";
+import { cookies } from "next/headers";
 
 // Now you can use PineconeVectorStore in your code
 
@@ -19,14 +20,17 @@ export const ourFileRouter = {
         .middleware(async ({ req }) => {
             // checking user is auth or not(kinde)
 
-            const { getUser } = getKindeServerSession()
-            const user = await getUser()
+            const cookieStore = cookies();
 
-            if (!user || !user.email) {
+        const user = cookieStore.get('user')?.value.toString();
+        const email = cookieStore.get('email')?.value.toString();
+
+
+            if (!user || !email) {
                 throw new Error("Unauthorized")
             }
 
-            return { userId: user.id };
+            return { userId: user };
         })
         // callback called once file upload is completed
         // use to add file url on our fileDb 

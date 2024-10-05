@@ -4,41 +4,44 @@ import ChatWrapper from "@/components/chat/ChatWrapper"
 import PdfRenederer from "@/components/PdfRenederer"
 import { db } from "@/db"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
+import { cookies } from "next/headers"
 import { notFound, redirect } from "next/navigation"
 
 // defining PageProps
 interface PageProps {
-    params: {
-        fileid: string  //name of dynamic folder ex: [name]
-    }
+  params: {
+    fileid: string  //name of dynamic folder ex: [name]
+  }
 }
 
 const Page = async ({ params }: PageProps) => {
-    const { fileid } = params
+  const { fileid } = params
 
-    // make user user is loggedIn
-    const { getUser } = getKindeServerSession()
-    const user = await getUser()
+  // make user user is loggedIn
+  const cookieStore = cookies();
 
-    if (!user || !user.id) {
-        // if user not logged in redirecting to auth
-        // origin ensures once user logged in it gets back to same fileOpen 
-        redirect(`/auth-callback?origin=dashboard/${fileid}`)
+  const user = cookieStore.get('user')?.value.toString();
+
+
+  if (!user) {
+    // if user not logged in redirecting to auth
+    // origin ensures once user logged in it gets back to same fileOpen 
+    redirect(`/authh-callback?origin=dashboard/${fileid}`)
+  }
+
+  const file = await db.file.findFirst({
+    where: {
+      id: fileid,
+      userId: user
     }
+  })
 
-    const file = await db.file.findFirst({
-        where: {
-            id: fileid,
-            userId: user.id
-        }
-    })
+  if (!file) {
+    return notFound()
+  }
 
-    if(!file){
-        return notFound()
-    }
-
-    return (
-        <div className='flex-1 justify-between flex flex-col'>
+  return (
+    <div className='flex-1 justify-between flex flex-col'>
       <div className='mx-auto w-full max-w-8xl grow lg:flex xl:px-2'>
         {/* Left sidebar & main wrapper */}
         <div className='flex-1 xl:flex'>
@@ -53,7 +56,7 @@ const Page = async ({ params }: PageProps) => {
         </div>
       </div>
     </div>
-    )
+  )
 }
 
 export default Page
