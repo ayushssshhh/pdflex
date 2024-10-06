@@ -2,7 +2,6 @@
 
 import { db } from "@/db";
 import { sendMessageValidator } from "@/lib/validator/SendMessageValidator";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextRequest } from "next/server";
 import { pinecone } from "@/lib/validator/pinecone";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai"

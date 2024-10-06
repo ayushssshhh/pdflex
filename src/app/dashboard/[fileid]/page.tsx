@@ -3,7 +3,6 @@
 import ChatWrapper from "@/components/chat/ChatWrapper"
 import PdfRenederer from "@/components/PdfRenederer"
 import { db } from "@/db"
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { cookies } from "next/headers"
 import { notFound, redirect } from "next/navigation"
 

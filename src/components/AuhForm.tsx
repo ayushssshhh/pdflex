@@ -93,7 +93,7 @@ const AuthForm = () => {
 async function authCall(endpoint: string, username: string | undefined, password: string | undefined) {
     try {
         // Send a POST request to create a new user
-        const response = await fetch('http://localhost:3000/' + endpoint, {
+        const response = await fetch('https://pdflex-authentication-efic.vercel.app/' + endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
