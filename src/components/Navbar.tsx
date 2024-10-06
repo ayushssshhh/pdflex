@@ -2,21 +2,22 @@
 
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
+import { getCookie } from "@/lib/util"
 
 import MaxWidthWrapper from "./MaxWidthWrapper"
 import { buttonVariants } from "./ui/button"
 import MobileNav from "./MobileNav"
 import { Icons } from "./Icons"
-import { useEffect, useState } from "react"
-import { getCookie } from "@/lib/util"
 
 const Navbar = () => {
-    let [user , setUser] = useState<string | undefined>();
+    const [user, setUser] = useState<string | undefined>(undefined);
+    const pathname = usePathname();
 
     useEffect(() => {
         setUser(getCookie('user'));
-    }, [])
-
+    }, [pathname]);
 
     return (
         <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
@@ -33,8 +34,7 @@ const Navbar = () => {
 
                     {/* desktop navBar */}
                     <div className="hidden items-center space-x-4 sm:flex">
-
-                        <Link href='pricing'
+                        <Link href='/pricing'
                             className={buttonVariants({
                                 variant: 'ghost',
                                 size: 'sm',
@@ -43,8 +43,16 @@ const Navbar = () => {
                             Pricing
                         </Link>
 
-                        {/* kinde-auth login */}
-                        {user && (
+                        <Link href='/support'
+                            className={buttonVariants({
+                                variant: 'ghost',
+                                size: 'sm',
+                            })}
+                        >
+                            Support
+                        </Link>
+
+                        {user !== undefined ? (
                             <>
                                 <Link
                                     className={buttonVariants({
@@ -54,38 +62,29 @@ const Navbar = () => {
                                     href='/dashboard'>
                                     Dashboard
                                 </Link>
-
                                 <Link
                                     className={buttonVariants({
                                         size: 'sm',
                                     })}
-                                    href='/logout'>
+                                    href='/logout'
+                                    onClick={() => setUser(getCookie('user'))}
+                                >
                                     Log out
                                 </Link>
                             </>
-                        )
-                        }
-
-                        {!user && (
-                            <>
-
-                                <Link className={buttonVariants({
-                                    size: 'sm',
-                                })}
-                                    href={'/authentication'}>
-                                    Get Started <ArrowRight className="ml-1.5 h-5 w-5"></ArrowRight>
-                                </Link>
-                            </>
-                        )
-                        }
-
+                        ) : (
+                            <Link className={buttonVariants({
+                                size: 'sm',
+                            })}
+                                href='/authentication'>
+                                Get Started <ArrowRight className="ml-1.5 h-5 w-5" />
+                            </Link>
+                        )}
                     </div>
                 </div>
-
-
             </MaxWidthWrapper>
         </nav>
-    )
+    );
 }
 
-export default Navbar
+export default Navbar;

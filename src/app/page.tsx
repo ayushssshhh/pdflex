@@ -19,15 +19,16 @@ export default function Home() {
         <h1 className="max-w-4xl text-5xl font-bold md:text-6xl lg:text-7xl">
           Chat with your <span className=" text-blue-600">Documents</span> in seconds
         </h1>
-        <p className="mt-5 max-w-prose text-zinc-700 sm:text-lg">
+        <p className="mt-5 mb-5 max-w-prose text-zinc-700 sm:text-lg">
           PDFlex allows you to have conversations with any PDF document. Simply upload your file and start asking questions right away.
         </p>
 
-        <RegisterLink className={buttonVariants({
+        <Link className={buttonVariants({
           size: 'sm',
-        })}>
+        })}
+          href={'/auth-callback'}>
           Get Started <ArrowRight className="ml-1.5 h-5 w-5"></ArrowRight>
-        </RegisterLink>
+        </Link>
       </MaxWidthWrapper>
 
       {/* value prepostion section */}

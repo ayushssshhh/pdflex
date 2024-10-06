@@ -1,21 +1,26 @@
 'use client'
 
+import { getCookie } from '@/lib/util'
 import { ArrowRight, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
+  let [user, setUser] = useState<string | undefined>();
+
+  useEffect(() => {
+    
+  }, [])
   const [isOpen, setOpen] = useState<boolean>(false)
-
   const toggleOpen = () => setOpen((prev) => !prev)
-
   const pathname = usePathname()
 
   // re-rendering entire component when ever url changes
   useEffect(() => {
+    setUser(getCookie('user'));
     if (isOpen) toggleOpen()
-  }, [pathname])
+  }, [pathname , user])
 
   // when ever any link is selected closing nav
   const closeOnCurrent = (href: string) => {
@@ -34,7 +39,7 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
       {isOpen ? (
         <div className='fixed animate-in slide-in-from-top-5 fade-in-20 inset-0 z-0 w-full'>
           <ul className='absolute bg-white border-b border-zinc-200 shadow-xl grid w-full gap-3 px-10 pt-20 pb-8'>
-            {!isAuth ? (
+            {!user ? (
               <>
                 <li>
                   <Link
@@ -42,23 +47,13 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
                       closeOnCurrent('/sign-up')
                     }
                     className='flex items-center w-full font-semibold text-green-600'
-                    href='/sign-up'>
+                    href='/authentication'>
                     Get started
                     <ArrowRight className='ml-2 h-5 w-5' />
                   </Link>
                 </li>
                 <li className='my-3 h-px w-full bg-gray-300' />
-                <li>
-                  <Link
-                    onClick={() =>
-                      closeOnCurrent('/sign-in')
-                    }
-                    className='flex items-center w-full font-semibold'
-                    href='/sign-in'>
-                    Sign in
-                  </Link>
-                </li>
-                <li className='my-3 h-px w-full bg-gray-300' />
+
                 <li>
                   <Link
                     onClick={() =>
@@ -67,6 +62,16 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
                     className='flex items-center w-full font-semibold'
                     href='/pricing'>
                     Pricing
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    onClick={() =>
+                      closeOnCurrent('/pricing')
+                    }
+                    className='flex items-center w-full font-semibold'
+                    href='/support'>
+                    Support
                   </Link>
                 </li>
               </>
@@ -86,8 +91,8 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
                 <li>
                   <Link
                     className='flex items-center w-full font-semibold'
-                    href='/sign-out'>
-                    Sign out
+                    href='/logout'>
+                    Log out
                   </Link>
                 </li>
               </>
