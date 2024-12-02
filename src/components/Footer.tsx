@@ -12,7 +12,7 @@ const Footer = () => {
                     <Icons.logo className='fill-blue-600 h-3/4 w-3/4' />
                 </div>
                 <h1>PDFlex</h1>
-                <p>developed by KUMAR AYUSH <span>|</span> 2024 </p>
+                <p>developed by KUMAR AYUSH & YASH AGRAWAL <span>|</span> 2024 </p>
             </div>
             <p className={classes.info}>A cutting-edge PDF chatbot powered by OpenAI GenAI technology. </p>
 
