@@ -60,7 +60,7 @@ const Footer = () => {
             <div className={classes.line}></div>
 
             <div className={classes.quickLinks}>
-                <p>Developer Information <ArrowRight /></p>
+                <p>Developer Information &lpar;Kumar Ayush&rpar; <ArrowRight /></p>
                 <a
                     href='https://www.linkedin.com/in/kumar-ayush-3b8a27240/'
                     target='_blank' className={buttonVariants({
@@ -93,6 +93,25 @@ const Footer = () => {
                     })}>Portfolio</a>
             </div>
 
+            <div className={classes.quickLinks}>
+                <p>Developer Information  &lpar;Yash Aggrawal&rpar; <ArrowRight /></p>
+                <a
+                    href='mailto:yashagrawal0916@gmail.com'
+                    target='_blank' className={buttonVariants({
+                        variant: 'ghost',
+                        size: 'sm',
+                    })}>Email</a>
+
+                <p>|</p>
+                <a
+                    href='https://github.com/yaaassshhhh'
+                    target='_blank' className={buttonVariants({
+                        variant: 'ghost',
+                        size: 'sm',
+                    })}>Github</a>
+
+                <p>|</p>
+            </div>
 
         </div>
     )
