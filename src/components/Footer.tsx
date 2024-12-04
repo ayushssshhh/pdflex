@@ -96,6 +96,14 @@ const Footer = () => {
             <div className={classes.quickLinks}>
                 <p>Developer Information {'(Yash Aggrawal)'} <ArrowRight /></p>
                 <a
+                    href='http://www.linkedin.com/in/yash-agrawal-724785244/'
+                    target='_blank' className={buttonVariants({
+                        variant: 'ghost',
+                        size: 'sm',
+                    })}>LinkedIn</a>
+
+                <p>|</p>
+                <a
                     href='mailto:yashagrawal0916@gmail.com'
                     target='_blank' className={buttonVariants({
                         variant: 'ghost',
