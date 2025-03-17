@@ -76,7 +76,7 @@ const UploadDropzone = ({setOpen} : stateProps) => {
                 // seting uploading state true
                 setIsUploading(true)
 
-                if(acceptedFile[0].size > 16,777,216){
+                if(acceptedFile[0].size > 16777216){
                     setOpen(false)
                     return toast({
                         title: 'File To Large, please try uploading PDF file with less characters',
@@ -181,7 +181,6 @@ const UploadDropzone = ({setOpen} : stateProps) => {
                                     ) : null}
                                 </div>
                             ) : null}
-                            <input {...getInputProps} type="file" id='dropzone-file' className="hidden" />
                         </label>
                     </div>
                 </div >
