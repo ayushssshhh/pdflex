@@ -1,10 +1,10 @@
 import { db } from "@/db";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
-import {PDFLoader} from 'langchain/document_loaders/fs/pdf'
+import { PDFLoader } from 'langchain/document_loaders/fs/pdf'
 import { pinecone } from "@/lib/validator/pinecone";
-import {OpenAIEmbeddings} from "langchain/embeddings/openai"
-import { PineconeStore } from "langchain/vectorstores/pinecone";
+import { OpenAIEmbeddings } from "@langchain/openai";
+import { PineconeStore } from "@langchain/pinecone";
 import { cookies } from "next/headers";
 
 // Now you can use PineconeVectorStore in your code
@@ -21,8 +21,8 @@ export const ourFileRouter = {
 
             const cookieStore = cookies();
 
-        const user = cookieStore.get('user')?.value.toString();
-        const email = cookieStore.get('email')?.value.toString();
+            const user = cookieStore.get('user')?.value.toString();
+            const email = cookieStore.get('email')?.value.toString();
 
 
             if (!user || !email) {
@@ -44,9 +44,9 @@ export const ourFileRouter = {
                 }
             })
 
-            try{
+            try {
                 const response = await fetch(file.url)
-                
+
                 // creating blob object from pdf
                 // blob -> Blobs represent data that isn't necessarily in a JavaScript-native format , hey can be read as text or binary data, or converted into a ReadableStream
                 const blob = await response.blob()
@@ -61,21 +61,21 @@ export const ourFileRouter = {
                 const pagesAmt = pageLevelDocs.length
 
                 // vectorizing and indexing entire pdf
-                const pineconeIndex = pinecone.Index("pdflex")
+                const pineconeIndex = pinecone.Index("pdflex2")
 
                 // use to generate vector from text
                 const embeddings = new OpenAIEmbeddings({
                     openAIApiKey: process.env.OPENAI_API_KEY
                 })
 
-                await PineconeStore.fromDocuments(pageLevelDocs , embeddings , {
+                await PineconeStore.fromDocuments(pageLevelDocs, embeddings, {
                     pineconeIndex,
                     namespace: createdFile.id
                 })
 
                 // updating file upload status
                 await db.file.update({
-                    data:{
+                    data: {
                         uploadStatus: "SUCCESS"
                     },
                     where: {
@@ -83,17 +83,20 @@ export const ourFileRouter = {
                     }
                 })
 
-            } catch(err){
+            } catch (err) {
                 await db.file.update({
-                    data:{
+                    data: {
                         uploadStatus: "FAILED"
                     },
                     where: {
                         id: createdFile.id
                     }
                 })
+
+                console.debug("core.ts : error file saving file : ", err)
             }
         }),
+
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

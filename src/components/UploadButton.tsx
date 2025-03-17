@@ -76,6 +76,15 @@ const UploadDropzone = ({setOpen} : stateProps) => {
                 // seting uploading state true
                 setIsUploading(true)
 
+                if(acceptedFile[0].size > 16,777,216){
+                    setOpen(false)
+                    return toast({
+                        title: 'File To Large, please try uploading PDF file with less characters',
+                        description: "This file conatains too many characters beacuse of which converted vector document exeeds 16mb limit",
+                        variant: 'destructive'
+                    })
+                }
+
                 // envoking deterministic Progress
                 const progressInterval = startSimulatedProgress()
 

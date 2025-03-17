@@ -1,150 +1,120 @@
-// endpoint for asking question to pdf
-
 import { db } from "@/db";
 import { sendMessageValidator } from "@/lib/validator/SendMessageValidator";
 import { NextRequest } from "next/server";
 import { pinecone } from "@/lib/validator/pinecone";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai"
-import { PineconeStore } from 'langchain/vectorstores/pinecone'
+import { OpenAIEmbeddings } from "@langchain/openai";
+import { PineconeStore } from "@langchain/pinecone";
 import { openai } from "@/lib/openai";
-import { OpenAIStream, StreamingTextResponse } from "ai"
+import { OpenAIStream, StreamingTextResponse } from "ai";
 import { cookies } from "next/headers";
 
 export const POST = (async (req: NextRequest) => {
-    const body = await req.json()
+    const body = await req.json();
 
-    // making sure user if auth
+    // making sure user is authenticated
     const cookieStore = cookies();
+    const user = cookieStore.get("user")?.value.toString();
 
-    const user = cookieStore.get('user')?.value.toString();
-
-
-    // if user not logged in
     if (!user) {
-        return new Response('Unauthorize', { status: 401 })
+        return new Response("Unauthorized", { status: 401 });
     }
 
-    // geting body content -> file and message
-    const { fileId, message } = sendMessageValidator.parse(body)
+    // extracting fileId and message from request body
+    const { fileId, message } = sendMessageValidator.parse(body);
 
-    // fething file for which message req is made
+    // fetching file associated with the request
     const file = await db.file.findFirst({
         where: {
             id: fileId,
-            userId : user,
+            userId: user,
         }
-    })
+    });
 
-    // if file not found
     if (!file) {
-        return new Response('Not Found', { status: 404 })
+        return new Response("Not Found", { status: 404 });
     }
 
-    // storing message in messageDb
+    // storing user message in database
     await db.message.create({
         data: {
             text: message,
             isUserMessage: true,
-            userId : user,
-            fileId
+            userId: user,
+            fileId,
         }
-    })
+    });
 
-    // creating answer from pdf:
-    // 1. index entire pdf into vector
-    // 2. index message from user into vector
-    // 3. match the both index and find most relevant match
+    // initializing Pinecone index
+    const pineconeIndex = pinecone.Index("pdflex2");
 
-    const pineconeIndex = pinecone.Index("pdflex")
-
-    // use to generate vector from text
+    // generate vector embeddings from text
     const embeddings = new OpenAIEmbeddings({
-        openAIApiKey: process.env.OPENAI_API_KEY
-    })
+        openAIApiKey: process.env.OPENAI_API_KEY,
+    });
 
-    // search most relevant vectorPage with messageVector 
+    // search for most relevant vector pages
     const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
         pineconeIndex,
-        namespace: file.id
-    })
+        namespace: file.id,
+    });
 
-    // extracting 4 closest vector
-    const results = await vectorStore.similaritySearch(message, 4)
+    const results = await vectorStore.similaritySearch(message, 4);
 
-    // taking account of previous 6 messages for better accuracy
+    // retrieve previous 6 messages for context
     const prevMessages = await db.message.findMany({
-        where: {
-            fileId,
-        },
-        orderBy: {
-            createdAt: "asc"
-        },
-        take: 6
-    })
+        where: { fileId },
+        orderBy: { createdAt: "asc" },
+        take: 6,
+    });
 
-    // formatting prev message for openAi i/p
     const formattedPrevMessages = prevMessages.map((msg) => ({
-        role: msg.isUserMessage ? "user" as const : "assistant" as const,
-        content: msg.text
-    }))
+        role: msg.isUserMessage ? "user" : "assistant",
+        content: msg.text,
+    }));
 
-    // sending req to openAi
-
+    // generating AI response
     const response = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         temperature: 0,
-        stream: true,  //streaming response in realtime
+        stream: true,
         messages: [
             {
-                role: 'system',
-                content: 'Use the following pieces of context (or previous conversaton if needed) to answer the users question in markdown format.',
+                role: "system",
+                content: "Use the following pieces of context (or previous conversation if needed) to answer the user's question in markdown format.",
             },
             {
-                role: 'user',
-                content:
-                    `
-                    Use the following pieces of context (or previous conversaton if needed) to answer the users question in markdown format. \nIf you don't know the answer, just say that you don't know, don't try to make up an answer.
-              
-                    \n----------------\n
-        
+                role: "user",
+                content: `
+                    Use the following pieces of context (or previous conversation if needed) to answer the user's question in markdown format.
+                    If you don't know the answer, just say that you don't know.
+                    
+                    ----------------
                     PREVIOUS CONVERSATION:
-                    ${formattedPrevMessages.map((message) => {
-                        if (message.role === 'user') return `User: ${message.content}\n`
-                        return `Assistant: ${message.content}\n`
-                    })}
-        
-                    \n----------------\n
-        
+                    ${formattedPrevMessages.map((m) => `${m.role}: ${m.content}\n`).join("")}
+                    
+                    ----------------
                     CONTEXT:
-                    ${results.map((r) => r.pageContent).join('\n\n')}
-        
+                    ${results.map((r) => r.pageContent).join("\n\n")}
+                    
                     USER INPUT: ${message}
                 `,
             },
         ],
-    })
+    });
 
-
-    // getting text from response generated by openAI
+    // streaming response
     const stream = OpenAIStream(response, {
-        async onCompletion(completion) { //completion -> one long setence send by open ai
-
-            // saving ans in messageDb
+        async onCompletion(completion) {
             await db.message.create({
                 data: {
                     text: completion,
                     isUserMessage: false,
                     fileId,
-                    userId : user
-                }
-            })
-        }
-    })
+                    userId: user,
+                },
+            });
+        },
+    });
 
-    // streaming response on realtime using custom route
-
-    // console.log("user : " + message);
-    // console.log("api : " + stream);
-
-    return new StreamingTextResponse(stream)
-})
+    return new StreamingTextResponse(stream);
+});
